@@ -1,6 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
-import geocoder
 
 app = Flask(__name__)
 
@@ -8,7 +7,7 @@ def get_weather_data(latitude, longitude):
     url = "https://weatherapi-com.p.rapidapi.com/current.json"  # Weather API endpoint
     querystring = {"q": f"{latitude},{longitude}"}  # Query using latitude and longitude
     headers = {
-        "X-RapidAPI-Key": "28e063f474mshdce606ead0ea727p19c857jsnec0750502031",
+        "X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY",  # Replace with your actual RapidAPI key
         "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com"
     }
     
@@ -39,27 +38,20 @@ def get_weather_data(latitude, longitude):
     else:
         return None
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    # Get latitude and longitude using geocoder
-    coordinates = get_current_location()
-    if coordinates:
-        latitude, longitude = coordinates
-        # Get weather data
+    if request.method == 'POST':
+        data = request.json
+        latitude = data['latitude']
+        longitude = data['longitude']
         weather_data = get_weather_data(latitude, longitude)
         
         if weather_data:
-            # Render the HTML template with the weather data
             return render_template('index.html', **weather_data)
-    
-    return "Failed to retrieve weather data."
-
-def get_current_location():
-    g = geocoder.ip('me')
-    if g.ok:
-        return g.latlng
+        else:
+            return "Failed to retrieve weather data."
     else:
-        return None
+        return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

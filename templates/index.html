@@ -14,7 +14,7 @@
 
     .center {
         display: block;
-        margin: 0 auto; /* Auto margin on left and right */
+        margin: 0 auto; 
     }
 
     body {
@@ -116,73 +116,38 @@
         <input type="checkbox" id="darkModeSwitch" onchange="toggleDarkMode()">
         <span class="slider"></span>
     </label>
-    <div>
-        <img src="{{ icon }}" alt="Weather Icon" class="center">
+<div>
+    <img src="{{ icon }}" alt="Weather Icon" class="center">
+</div>
+<h3>{{ description }}</h3>
+<br><br><br><br>
+<div class="grid-container">
+    <div class="grid-item">
+        <h2>City: {{ city_name }}</h2>
     </div>
-    <h3>{{ description }}</h3>
-    <br><br><br><br>
-    <div class="grid-container">
-        <div class="grid-item">
-            <h2>City: {{ city_name }}</h2>
-        </div>
-        <div class="grid-item">
-            <h2>Temperature: {{ temp }}&deg;</h2>
-        </div>
-        <div class="grid-item">
-            <h2>Humidity: {{ humidity }}</h2>
-        </div>
-        <div class="grid-item">
-            <h2>Precipitation Level: {{ precipitation_level }}mm</h2>
-        </div>
-        <div class="grid-item">
-            <h2>Wind Speed: {{ wind }}</h2>
-        </div>
-        <div class="grid-item">
-            <h2>Pressure: {{ pressure }}</h2>
-        </div>
+    <div class="grid-item">
+        <h2>Temperature: {{ temp }}&deg;</h2>
     </div>
+    <div class="grid-item">
+        <h2>Humidity: {{ humidity }}</h2>
+    </div>
+    <div class="grid-item">
+        <h2>Precipitation Level: {{ precipitation_level }}mm</h2>
+    </div>
+    <div class="grid-item">
+        <h2>Wind Speed: {{ wind }}</h2>
+    </div>
+    <div class="grid-item">
+        <h2>Pressure: {{ pressure }}</h2>
+    </div>
+</div>
 
-   <script>
-    function toggleDarkMode() {
-        var element = document.body;
-        element.classList.toggle("dark-mode");
-    }
-
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, showError);
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
-    }
-
-    function showPosition(position) {
-        var lat = position.coords.latitude;
-        var lon = position.coords.longitude;
-
-        // Redirect to the same URL with latitude and longitude as query parameters
-        window.location.href = `/?latitude=${lat}&longitude=${lon}`;
-    }
-
-    function showError(error) {
-        switch(error.code) {
-            case error.PERMISSION_DENIED:
-                alert("User denied the request for Geolocation.");
-                break;
-            case error.POSITION_UNAVAILABLE:
-                alert("Location information is unavailable.");
-                break;
-            case error.TIMEOUT:
-                alert("The request to get user location timed out.");
-                break;
-            case error.UNKNOWN_ERROR:
-                alert("An unknown error occurred.");
-                break;
-        }
-    }
-    window.onload = getLocation;
+<script>
+function toggleDarkMode() {
+    var element = document.body;
+    element.classList.toggle("dark-mode");
+}
 </script>
-
 
 </body>
 </html>

@@ -38,20 +38,20 @@ def get_weather_data(latitude, longitude):
     else:
         return None
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
-    if request.method == 'POST':
-        data = request.json
-        latitude = data['latitude']
-        longitude = data['longitude']
+    latitude = request.args.get('latitude')
+    longitude = request.args.get('longitude')
+
+    if latitude and longitude:
         weather_data = get_weather_data(latitude, longitude)
         
         if weather_data:
             return render_template('index.html', **weather_data)
         else:
             return "Failed to retrieve weather data."
-    else:
-        return render_template('index.html')
+    
+    return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
